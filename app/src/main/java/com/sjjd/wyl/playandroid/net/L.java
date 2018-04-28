@@ -5,15 +5,17 @@ package com.sjjd.wyl.playandroid.net;
  */
 
 public interface L {
-    public interface URL_MAIN {
+    interface URL_MAIN {
 
-        public String Get_Banner = "http://www.wanandroid.com/banner/json";
+        String Get_Banner = "http://www.wanandroid.com/banner/json";
+        String Get_List = "http://www.wanandroid.com/article/list/%1$d/json";
+        String Get_Search = "http://www.wanandroid.com/article/query/%1$d/json";
     }
 
     interface CODE {
-        public int MSG_MAIN_BANNER_SUCCESS = 2000;
-
-        public int MSG_DATA_FAILED = -1;
+        int MSG_MAIN_BANNER_SUCCESS = 2000;
+        int MSG_MAIN_ARTICLE_SUCCESS = 2008;
+        int MSG_DATA_FAILED = -1;
 
 
     }

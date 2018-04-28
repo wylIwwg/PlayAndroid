@@ -32,6 +32,8 @@
         </activity>
         <activity android:name=".base.BaseActivity">
         </activity>
+        <activity android:name=".activities.WebActivity">
+        </activity>
     </application>
 
 </manifest>

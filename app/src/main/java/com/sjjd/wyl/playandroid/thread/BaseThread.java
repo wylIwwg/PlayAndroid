@@ -33,7 +33,7 @@ public abstract class BaseThread extends Thread {
     protected Handler mHandler;
 
     private boolean pause = false;
-    private boolean flag = true;
+    public boolean flag = true;
     private Object lock = new Object();
 
 

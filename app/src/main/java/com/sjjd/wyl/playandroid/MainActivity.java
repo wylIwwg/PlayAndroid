@@ -1,66 +1,90 @@
 package com.sjjd.wyl.playandroid;
 
-import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.view.ViewPager;
+import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.FrameLayout;
 
-import com.scwang.smartrefresh.header.StoreHouseHeader;
-import com.sjjd.wyl.playandroid.adapter.BannerAdapter;
-import com.sjjd.wyl.playandroid.base.BaseActivity;
-import com.sjjd.wyl.playandroid.bean.BannerBean;
-import com.sjjd.wyl.playandroid.net.L;
-import com.sjjd.wyl.playandroid.thread.BannerThread;
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
+import com.sjjd.wyl.playandroid.fragments.FavouriteFragment;
+import com.sjjd.wyl.playandroid.fragments.MainFragment;
+import com.sjjd.wyl.playandroid.fragments.PersonFragment;
 
-import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Iterator;
 
-public class MainActivity extends BaseActivity {
-    ViewPager mVpBanner;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class MainActivity extends AppCompatActivity {
+
+    @BindView(R.id.contentContainer)
+    FrameLayout mContentContainer;
+    @BindView(R.id.bottomBar)
+    BottomBar mBottomBar;
+
+    HashMap<String, Fragment> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        initView();
-        rootLayout.setRefreshHeader(new StoreHouseHeader(mContext).initWithString("PLAY ANDROID").setTextColor(Color.WHITE));
-        NetHander mNetHander = new NetHander(this);
-        mThread = new BannerThread(mContext, mNetHander);
-        mThread.start();
-    }
+        fragments = new HashMap<>();
+        mBottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                FragmentTransaction mTransaction = getSupportFragmentManager().beginTransaction();
+                hideFragments(mTransaction);
+                switch (tabId) {
+                    case R.id.tab_main:
+                        if (fragments.get(MainFragment.class.getName()) == null) {
 
+                            MainFragment mMainFragment = new MainFragment();
+                            fragments.put(MainFragment.class.getName(), mMainFragment);
+                            mTransaction.add(R.id.contentContainer, mMainFragment).show(mMainFragment);
+                        } else {
+                            mTransaction.show(fragments.get(MainFragment.class.getName()));
 
-    private void initView() {
+                        }
+                        break;
+                    case R.id.tab_favorites:
+                        if (fragments.get(FavouriteFragment.class.getName()) == null) {
 
-        mVpBanner = findViewById(R.id.vpBanner);
-    }
+                            FavouriteFragment mFavouriteFragment = new FavouriteFragment();
+                            fragments.put(FavouriteFragment.class.getName(), mFavouriteFragment);
+                            mTransaction.add(R.id.contentContainer, mFavouriteFragment).show(mFavouriteFragment);
+                        } else {
+                            mTransaction.show(fragments.get(FavouriteFragment.class.getName()));
 
+                        }
+                        break;
+                    case R.id.tab_friends:
+                        if (fragments.get(PersonFragment.class.getName()) == null) {
 
-    class NetHander extends Handler {
-
-        private WeakReference<Activity> mReference;
-
-        public NetHander(Activity reference) {
-            mReference = new WeakReference<Activity>(reference);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case L.CODE.MSG_MAIN_BANNER_SUCCESS:
-                    BannerBean banner = (BannerBean) msg.obj;
-                    initBanner(banner);
-                    break;
-                case L.CODE.MSG_DATA_FAILED:
-                    break;
+                            PersonFragment mPersonFragment = new PersonFragment();
+                            fragments.put(PersonFragment.class.getName(), mPersonFragment);
+                            mTransaction.add(R.id.contentContainer, mPersonFragment).show(mPersonFragment);
+                        } else {
+                            mTransaction.show(fragments.get(PersonFragment.class.getName()));
+                        }
+                        break;
+                }
+                mTransaction.commitAllowingStateLoss();
             }
+        });
+    }
+
+    private void hideFragments(FragmentTransaction transaction) {
+        Iterator<Fragment> mIterator = fragments.values().iterator();
+        while (mIterator.hasNext()) {
+            transaction.hide(mIterator.next());
         }
     }
 
-    private void initBanner(BannerBean banner) {
-        BannerAdapter mAdapter = new BannerAdapter(mContext, banner.getData());
-        mVpBanner.setAdapter(mAdapter);
-    }
+
 }
