@@ -2,11 +2,14 @@
 <tabs>
     <tab
         id="@+id/tab_main"
-        title="Favorites"/>
+        title="首页"/>
+    <tab
+        id="@+id/tab_category"
+        title="分类"/>
     <tab
         id="@+id/tab_favorites"
-        title="Nearby"/>
+        title="收藏"/>
     <tab
-        id="@+id/tab_friends"
-        title="Friends"/>
+        id="@+id/tab_person"
+        title="个人"/>
 </tabs>

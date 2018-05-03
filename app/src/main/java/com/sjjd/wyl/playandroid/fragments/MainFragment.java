@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,13 +13,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.library.flowlayout.FlowLayoutManager;
+import com.library.flowlayout.SpaceItemDecoration;
 import com.scwang.smartrefresh.header.StoreHouseHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -27,11 +33,14 @@ import com.sjjd.wyl.playandroid.R;
 import com.sjjd.wyl.playandroid.activities.WebActivity;
 import com.sjjd.wyl.playandroid.adapter.ArticleAdapter;
 import com.sjjd.wyl.playandroid.adapter.BannerPager;
+import com.sjjd.wyl.playandroid.adapter.HotWordsAdapter;
 import com.sjjd.wyl.playandroid.bean.ArticleBean;
 import com.sjjd.wyl.playandroid.bean.BannerBean;
+import com.sjjd.wyl.playandroid.bean.HotWords;
 import com.sjjd.wyl.playandroid.net.L;
 import com.sjjd.wyl.playandroid.thread.ArticleListThread;
 import com.sjjd.wyl.playandroid.thread.BannerThread;
+import com.sjjd.wyl.playandroid.thread.KeyWorsThread;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -45,8 +54,7 @@ import butterknife.Unbinder;
  * A simple {@link Fragment} subclass.
  */
 public class MainFragment extends Fragment {
-
-
+    private final String TAG = this.getClass().getSimpleName();
     @BindView(R.id.etSearch)
     EditText mEtSearch;
     @BindView(R.id.btnSearch)
@@ -62,16 +70,23 @@ public class MainFragment extends Fragment {
     TextView mTvTips;
 
     BannerThread mBannerThread;
-    ArticleListThread mArticleListThread;
-    ArticleListThread mArticleSearchThread;
-    NetHander mNetHander;
-    ArticleAdapter mArticleAdapter;
-    LinearLayoutManager mLayoutManager;
-    List<ArticleBean.Datas> mArticleList;
-    Context mContext;
+    ArticleListThread mArticleListThread;//文章线程
+    ArticleListThread mArticleSearchThread;//搜索热词线程
+    KeyWorsThread mKeyWorsThread;
 
-    int pageCount = 0;
+    NetHander mNetHander;
+    LinearLayoutManager mLayoutManager;
+
+    ArticleAdapter mArticleAdapter;
+    HotWordsAdapter mWordsAdapter;
+
+    List<ArticleBean.Datas> mArticleList;//文章集合
+    List<HotWords.Data> keysList;//全部热词
+    Context mContext;
+    int pageCount = 0;//页数
+
     String key = "";//搜索关键词
+    PopupWindow pop;//热词显示
 
     public MainFragment() {
         // Required empty public constructor
@@ -89,6 +104,7 @@ public class MainFragment extends Fragment {
         mArticleList = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(mContext);
         mArticleAdapter = new ArticleAdapter(mContext, mArticleList);
+        mWordsAdapter = new HotWordsAdapter(keysList = new ArrayList<>(), mContext);
         mRlvMain.setLayoutManager(mLayoutManager);
         mRlvMain.setAdapter(mArticleAdapter);
         mNetHander = new NetHander((Activity) mContext);
@@ -97,19 +113,43 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+    boolean isShowing = false;
 
     private void setListener() {
+
+        //搜索框点击监听 显示热词
+        mEtSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isShowing) {
+                    pop.dismiss();
+                    isShowing = false;
+                } else {
+                    isShowing = true;
+                    if (pop == null)
+                        showKeysPop();
+                    else pop.showAsDropDown(mEtSearch);
+                }
+            }
+        });
+
 
         mSrlRoot.setOnRefreshLoadMoreListener(new OnRefreshLoadMoreListener() {
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 pageCount = 0;
-                if (key != null && key.length() > 1) {
+              /*  if (key != null && key.length() > 1) {
                     mArticleSearchThread = new ArticleListThread(mContext, mNetHander, pageCount, key);
                     mArticleSearchThread.start();
                 } else {
-                    initData();
-                }
+                    mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
+                    mArticleListThread.start();
+                }*/
+                mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
+                mArticleListThread.start();
+                key = "";
+                mEtSearch.setText("");
+
             }
 
             @Override
@@ -119,7 +159,8 @@ public class MainFragment extends Fragment {
                     mArticleSearchThread = new ArticleListThread(mContext, mNetHander, pageCount, key);
                     mArticleSearchThread.start();
                 } else {
-                    initData();
+                    mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
+                    mArticleListThread.start();
                 }
 
             }
@@ -135,11 +176,32 @@ public class MainFragment extends Fragment {
                     mArticleSearchThread = new ArticleListThread(mContext, mNetHander, pageCount, key);
                     mArticleSearchThread.start();
                 } else {//没有默认显示最新文章
-                    initData();
+                    mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
+                    mArticleListThread.start();
                 }
             }
         });
 
+
+        mWordsAdapter.setKeyClickListener(new HotWordsAdapter.KeyClickListener() {
+            @Override
+            public void keyClick(String key) {
+                mEtSearch.setText(key);
+                MainFragment.this.key = key;
+                //有关键词则搜索
+                if (key.length() > 1) {
+                    pageCount = 0;
+                    mArticleSearchThread = new ArticleListThread(mContext, mNetHander, pageCount, key);
+                    mArticleSearchThread.start();
+                } else {//没有默认显示最新文章
+                    mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
+                    mArticleListThread.start();
+                }
+                if (pop.isShowing()) {
+                    pop.dismiss();
+                }
+            }
+        });
 
         mArticleAdapter.setArticleClickListener(new ArticleAdapter.ArticleClickListener() {
             @Override
@@ -147,6 +209,10 @@ public class MainFragment extends Fragment {
                 Intent mIntent = new Intent(mContext, WebActivity.class);
                 mIntent.putExtra("url", url);
                 mContext.startActivity(mIntent);
+                if (pop != null && isShowing) {
+                    pop.dismiss();
+                    isShowing = false;
+                }
             }
         });
         mVpBanner.setBannerClickLisener(new BannerPager.BannerClickLisener() {
@@ -155,11 +221,19 @@ public class MainFragment extends Fragment {
                 Intent mIntent = new Intent(mContext, WebActivity.class);
                 mIntent.putExtra("url", url);
                 mContext.startActivity(mIntent);
+                if (pop != null && isShowing) {
+                    pop.dismiss();
+                    isShowing = false;
+                }
             }
         });
     }
 
+    //开启线程 加载数据
     private void initData() {
+
+        mKeyWorsThread = new KeyWorsThread(mContext, mNetHander);
+        mKeyWorsThread.start();
 
         mBannerThread = new BannerThread(mContext, mNetHander);
         mBannerThread.start();
@@ -188,13 +262,47 @@ public class MainFragment extends Fragment {
                     initArticle(article);
 
                     break;
+                case L.CODE.MSG_MAIN_HOTWORDS_SUCCESS:
+                    HotWords keys = (HotWords) msg.obj;
+                    mWordsAdapter.refreshData(keys.getData());
+
+                    break;
                 case L.CODE.MSG_DATA_FAILED:
                     break;
             }
-
+            //关闭加载刷新
             mSrlRoot.finishLoadMore();
             mSrlRoot.finishRefresh();
         }
+
+    }
+
+    private void showKeysPop() {
+
+        View view = View.inflate(mContext, R.layout.item_hotwords, null);
+        pop = new PopupWindow(view, -1,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        //设置属性配置 否则外部Editview无法同时编辑输入
+        pop.setFocusable(false);// 点击back退出pop
+        pop.setOutsideTouchable(true);
+        pop.setTouchable(true);
+        pop.setAnimationStyle(R.style.PopupAnimation);
+        pop.setBackgroundDrawable(new ColorDrawable(0xffffffff));
+
+        RecyclerView mRlVKeys = view.findViewById(R.id.rlvHotWords);
+        FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+        mRlVKeys.addItemDecoration(new SpaceItemDecoration(dp2px(10)));
+        mRlVKeys.setLayoutManager(flowLayoutManager);
+        mRlVKeys.setAdapter(mWordsAdapter);
+        if (!pop.isShowing()) {
+            pop.showAsDropDown(mEtSearch);
+        }
+        isShowing = true;
+
+    }
+
+    private int dp2px(float value) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, getResources().getDisplayMetrics());
     }
 
     private void initArticle(ArticleBean article) {
@@ -211,5 +319,7 @@ public class MainFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        //关闭图片轮播
+        mVpBanner.stopPlayLoop();
     }
 }

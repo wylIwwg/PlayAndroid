@@ -47,12 +47,12 @@
 
 
         <TextView
-            android:textColor="@color/seagreen"
             android:id="@+id/tvTips"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="最新博文"
+            android:textColor="@color/seagreen"
             android:visibility="invisible"/>
 
         <android.support.v7.widget.RecyclerView

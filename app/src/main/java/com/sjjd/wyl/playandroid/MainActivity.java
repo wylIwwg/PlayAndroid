@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.sjjd.wyl.playandroid.fragments.CategoryFragment;
 import com.sjjd.wyl.playandroid.fragments.FavouriteFragment;
 import com.sjjd.wyl.playandroid.fragments.MainFragment;
 import com.sjjd.wyl.playandroid.fragments.PersonFragment;
@@ -52,6 +53,18 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                         break;
+
+                    case R.id.tab_category:
+                        if (fragments.get(CategoryFragment.class.getName()) == null) {
+
+                            CategoryFragment mCateFragment = new CategoryFragment();
+                            fragments.put(CategoryFragment.class.getName(), mCateFragment);
+                            mTransaction.add(R.id.contentContainer, mCateFragment).show(mCateFragment);
+                        } else {
+                            mTransaction.show(fragments.get(CategoryFragment.class.getName()));
+
+                        }
+                        break;
                     case R.id.tab_favorites:
                         if (fragments.get(FavouriteFragment.class.getName()) == null) {
 
@@ -63,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                         break;
-                    case R.id.tab_friends:
+                    case R.id.tab_person:
                         if (fragments.get(PersonFragment.class.getName()) == null) {
 
                             PersonFragment mPersonFragment = new PersonFragment();

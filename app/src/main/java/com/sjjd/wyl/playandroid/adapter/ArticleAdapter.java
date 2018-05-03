@@ -2,6 +2,7 @@ package com.sjjd.wyl.playandroid.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,7 @@ public class ArticleAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         ArticleHolder h = (ArticleHolder) holder;
         final ArticleBean.Datas data = this.mDatas.get(position);
-        h.mTvTitle.setText(data.getTitle());
+        h.mTvTitle.setText(Html.fromHtml(data.getTitle()));
         h.mTvAuthor.setText("作者：" + data.getAuthor());
         h.mTvCategory.setText("分类：" + data.getChapterName());
         h.mTvTime.setText("时间：" + data.getNiceDate());
