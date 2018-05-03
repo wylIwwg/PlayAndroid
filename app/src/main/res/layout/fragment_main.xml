@@ -1,20 +1,25 @@
-<com.scwang.smartrefresh.layout.SmartRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/srlRoot"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.sjjd.wyl.playandroid.fragments.MainFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.sjjd.wyl.playandroid.fragments.MainFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        >
+        android:layout_height="250dp">
+
+        <com.sjjd.wyl.playandroid.adapter.BannerPager
+            android:id="@+id/vpBanner"
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+
+        </com.sjjd.wyl.playandroid.adapter.BannerPager>
 
         <RelativeLayout
+            android:id="@+id/rlSearch"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="40dp">
 
             <EditText
                 android:id="@+id/etSearch"
@@ -28,7 +33,7 @@
             <Button
                 android:id="@+id/btnSearch"
                 android:layout_width="60dp"
-                android:layout_height="40dp"
+                android:layout_height="35dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
@@ -37,31 +42,52 @@
                 android:textColor="@color/white"/>
 
         </RelativeLayout>
-
-        <com.sjjd.wyl.playandroid.adapter.BannerPager
-            android:id="@+id/vpBanner"
-            android:layout_width="match_parent"
-            android:layout_height="250dp">
-
-        </com.sjjd.wyl.playandroid.adapter.BannerPager>
+    </RelativeLayout>
 
 
-        <TextView
-            android:id="@+id/tvTips"
-            android:layout_width="match_parent"
+    <RadioGroup
+        android:id="@+id/rgGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbArticle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:button="@null"
             android:padding="5dp"
             android:text="最新博文"
-            android:textColor="@color/seagreen"
-            android:visibility="invisible"/>
+            android:textColor="@color/rb_main"
+            android:textSize="18sp"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rlvMain"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <RadioButton
+            android:id="@+id/rbProject"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:button="@null"
+            android:padding="5dp"
+            android:text="最新项目"
+            android:textColor="@color/rb_main"
+            android:textSize="18sp"/>
+    </RadioGroup>
 
-        </android.support.v7.widget.RecyclerView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/seagreen"/>
 
-    </LinearLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </android.support.v4.view.ViewPager>
+
+
+</LinearLayout>
+

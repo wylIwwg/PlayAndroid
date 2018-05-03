@@ -29,4 +29,9 @@ public interface L {
         int MSG_CATEGORY_SUCCESS = 20001;
         int MSG_CATEGORY_ARTICLES_SUCCESS = 20002;
     }
+
+    interface BROADCAST {
+        String KEY = "KEY_CHANGED" +
+                "";
+    }
 }

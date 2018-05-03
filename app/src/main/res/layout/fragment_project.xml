@@ -1,0 +1,17 @@
+<com.scwang.smartrefresh.layout.SmartRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/srlRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sjjd.wyl.playandroid.fragments.ProjectFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rlvProject"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
+
+    </android.support.v7.widget.RecyclerView>
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
