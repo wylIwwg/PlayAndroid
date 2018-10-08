@@ -21,20 +21,34 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".view.activities.main.MainActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity
+            android:name=".view.activities.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SplashActivity">
+        <activity
+            android:name=".base.BaseActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".base.BaseActivity">
+        <activity
+            android:name=".view.activities.WebActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.WebActivity">
+        <activity
+            android:name=".view.activities.ArticlesActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activities.ArticlesActivity">
+        <activity android:name=".view.activities.LoginActivity">
+
         </activity>
     </application>
 

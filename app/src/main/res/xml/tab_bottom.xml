@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
+        activeColor="@color/seagreen"
+        icon="@drawable/main_checked"
         id="@+id/tab_main"
+        inActiveColor="@color/dimgrey"
         title="首页"/>
     <tab
+        activeColor="@color/seagreen"
+        icon="@drawable/cate"
         id="@+id/tab_category"
+        inActiveColor="@color/dimgrey"
         title="分类"/>
     <tab
+        activeColor="@color/seagreen"
+        icon="@drawable/colle"
+        inActiveColor="@color/dimgrey"
         id="@+id/tab_favorites"
         title="收藏"/>
     <tab

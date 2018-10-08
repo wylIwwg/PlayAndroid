@@ -8,7 +8,7 @@ import android.util.Log;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.sjjd.wyl.playandroid.bean.HotWords;
-import com.sjjd.wyl.playandroid.net.L;
+import com.sjjd.wyl.playandroid.model.utils.L;
 
 /**
  * Created by wyl on 2018/4/27.
@@ -24,7 +24,7 @@ public class KeyWorsThread extends BaseThread {
     @Override
     protected void initData() {
         Log.e(TAG, "initData: " + "KeyWorsThread");
-        OkGo.<HotWords>get(L.URL_MAIN.Get_HotWords)
+        OkGo.<HotWords>get(L.URL.Get_HotWords)
                 .tag(this)
                 .execute(new JsonCallBack<HotWords>(HotWords.class) {
                              @Override

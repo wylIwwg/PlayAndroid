@@ -3,23 +3,23 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.sjjd.wyl.playandroid.fragments.MainFragment">
+              tools:context=".view.fragments.MainFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="200dp">
 
         <com.sjjd.wyl.playandroid.adapter.BannerPager
             android:id="@+id/vpBanner"
             android:layout_width="match_parent"
-            android:layout_height="250dp">
+            android:layout_height="200dp">
 
         </com.sjjd.wyl.playandroid.adapter.BannerPager>
 
         <RelativeLayout
             android:id="@+id/rlSearch"
             android:layout_width="match_parent"
-            android:layout_height="40dp">
+            android:layout_height="35dp">
 
             <EditText
                 android:id="@+id/etSearch"
@@ -31,9 +31,10 @@
                 android:textCursorDrawable="@drawable/cursor_color"/>
 
             <Button
+                android:textSize="13sp"
                 android:id="@+id/btnSearch"
                 android:layout_width="60dp"
-                android:layout_height="35dp"
+                android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="5dp"
@@ -49,36 +50,36 @@
         android:id="@+id/rgGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/rbArticle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:button="@null"
             android:padding="5dp"
             android:text="最新博文"
             android:textColor="@color/rb_main"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
 
         <RadioButton
             android:id="@+id/rbProject"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginLeft="20dp"
             android:button="@null"
             android:padding="5dp"
             android:text="最新项目"
             android:textColor="@color/rb_main"
-            android:textSize="18sp"/>
+            android:textSize="16sp"/>
     </RadioGroup>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/seagreen"/>
 
     <android.support.v4.view.ViewPager

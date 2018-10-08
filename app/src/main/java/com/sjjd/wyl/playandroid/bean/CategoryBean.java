@@ -37,7 +37,7 @@ public class CategoryBean {
         return this.errorMsg;
     }
 
-    public class Children {
+    public static class Children {
         private List<String> children;
 
         private int courseId;

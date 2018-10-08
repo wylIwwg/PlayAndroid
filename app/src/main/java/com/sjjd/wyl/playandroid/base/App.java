@@ -6,6 +6,8 @@ import android.content.Context;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.cache.CacheEntity;
 import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.cookie.CookieJarImpl;
+import com.lzy.okgo.cookie.store.SPCookieStore;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.scwang.smartrefresh.header.StoreHouseHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
@@ -27,15 +29,25 @@ import okhttp3.OkHttpClient;
  */
 
 public class App extends Application {
+    private static App instance;
+
+    public boolean logined = false;
+
+    public static App getInstance() {
+        if (instance == null) {
+            instance = new App();
+        }
+        return instance;
+    }
 
     static {
         //设置全局的Header构建器
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                layout.setPrimaryColorsId(R.color.colorPrimary, android.R.color.white);//全局设置主题颜色
+                layout.setPrimaryColorsId(R.color.dimgrey, android.R.color.white);//全局设置主题颜色
                 StoreHouseHeader header = new StoreHouseHeader(context);
-                return header;
+                return header.initWithString("PLAY ANDROID");
                 // return new ClassicsHeader(context);//.setTimeFormat(new DynamicTimeFormat("更新于 %s"));//指定为经典Header，默认是 贝塞尔雷达Header
             }
         });
@@ -80,12 +92,12 @@ public class App extends Application {
         builder.writeTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
         //全局的连接超时时间
         builder.connectTimeout(OkGo.DEFAULT_MILLISECONDS, TimeUnit.MILLISECONDS);
-
-
+        builder.cookieJar(new CookieJarImpl(new SPCookieStore(this)));
         // 其他统一的配置
         // 详细说明看GitHub文档：https://github.com/jeasonlzy/
         OkGo.getInstance().init(this)                           //必须调用初始化
                 .setOkHttpClient(builder.build())               //建议设置OkHttpClient，不设置会使用默认的
+
                 .setCacheMode(CacheMode.NO_CACHE)               //全局统一缓存模式，默认不使用缓存，可以不传
                 .setCacheTime(CacheEntity.CACHE_NEVER_EXPIRE)   //全局统一缓存时间，默认永不过期，可以不传
                 .setRetryCount(3)                               //全局统一超时重连次数，默认为三次，那么最差的情况会请求4次(一次原始请求，三次重连请求)，不需要可以设置为0

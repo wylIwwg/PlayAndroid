@@ -1,13 +1,17 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.sjjd.wyl.playandroid.fragments.FavouriteFragment">
+<com.scwang.smartrefresh.layout.SmartRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/srlRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    tools:context=".view.fragments.FavouriteFragment">
+
+    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
+        android:id="@+id/rlvCollect"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="收藏Fragment"/>
+        android:layout_height="match_parent">
 
-</FrameLayout>
+    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+
+</com.scwang.smartrefresh.layout.SmartRefreshLayout>

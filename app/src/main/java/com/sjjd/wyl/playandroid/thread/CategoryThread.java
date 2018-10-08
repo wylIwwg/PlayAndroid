@@ -8,7 +8,7 @@ import android.util.Log;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.sjjd.wyl.playandroid.bean.CategoryBean;
-import com.sjjd.wyl.playandroid.net.L;
+import com.sjjd.wyl.playandroid.model.utils.L;
 
 /**
  * Created by wyl on 2018/4/27.

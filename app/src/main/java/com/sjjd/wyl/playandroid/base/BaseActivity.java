@@ -12,8 +12,9 @@ import com.lzy.okgo.OkGo;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.sjjd.wyl.playandroid.R;
 import com.sjjd.wyl.playandroid.thread.BaseThread;
+import com.sjjd.wyl.playandroid.view.iview.IBaseView;
 
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity<V> extends AppCompatActivity implements IBaseView<V> {
 
     public SmartRefreshLayout rootLayout;
     public Context mContext;
@@ -46,6 +47,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
 
+        super.onDestroy();
 
         if (null != mThread) {
             mThread.onDestory();
@@ -55,6 +57,56 @@ public class BaseActivity extends AppCompatActivity {
         }
         OkGo.getInstance().cancelAll();
 
-        super.onDestroy();
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void onError(int error) {
+
+    }
+
+    @Override
+    public void onError(String error) {
+
+    }
+
+    @Override
+    public void onSuccess(String result) {
+
+    }
+
+    @Override
+    public void onSuccess(V result) {
+
+    }
+
+
+    @Override
+    public void showMessage(String msg) {
+
+    }
+
+    @Override
+    public void showMessage(int resId) {
+
+    }
+
+    @Override
+    public boolean isNetworkConnected() {
+        return false;
+    }
+
+    @Override
+    public void hideKeyboard() {
+
     }
 }

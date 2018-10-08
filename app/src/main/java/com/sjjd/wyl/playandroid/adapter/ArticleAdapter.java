@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sjjd.wyl.playandroid.R;
+import com.sjjd.wyl.playandroid.base.App;
 import com.sjjd.wyl.playandroid.bean.ArticleBean;
 
 import java.util.List;
@@ -47,11 +49,22 @@ public class ArticleAdapter extends RecyclerView.Adapter {
         h.mTvAuthor.setText("作者：" + data.getAuthor());
         h.mTvCategory.setText("分类：" + data.getChapterName());
         h.mTvTime.setText("时间：" + data.getNiceDate());
-        h.mCbCollect.setChecked(data.getCollect());
+
+        if (App.getInstance().logined)
+            h.mCbCollect.setChecked(data.getCollect());
 
         h.mCbCollect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (App.getInstance().logined) {
+                    if (isChecked) {
+
+                    } else {
+
+                    }
+                } else {
+                    Toast.makeText(mContext, "请先登录再来收藏吧~", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

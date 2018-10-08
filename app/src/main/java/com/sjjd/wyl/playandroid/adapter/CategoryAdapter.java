@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sjjd.wyl.playandroid.R;
-import com.sjjd.wyl.playandroid.activities.ArticlesActivity;
+import com.sjjd.wyl.playandroid.view.activities.ArticlesActivity;
 import com.sjjd.wyl.playandroid.bean.CategoryBean;
 
 import java.util.List;

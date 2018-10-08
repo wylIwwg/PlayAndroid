@@ -8,7 +8,7 @@ import android.util.Log;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.sjjd.wyl.playandroid.bean.ArticleBean;
-import com.sjjd.wyl.playandroid.net.L;
+import com.sjjd.wyl.playandroid.model.utils.L;
 
 /**
  * Created by wyl on 2018/4/27.
@@ -28,13 +28,13 @@ public class ArticleListThread extends BaseThread {
 
     public ArticleListThread(Context context, Handler handler, int page) {
         super(context, handler);
-        url = String.format(L.URL_MAIN.Get_List, page);
+        url = String.format(L.URL.Get_List, page);
 
     }
 
     public ArticleListThread(Context context, Handler handler, int page, String key) {
         super(context, handler);
-        url = String.format(L.URL_MAIN.Get_Search, page);
+        url = String.format(L.URL.Get_Search, page);
         this.key = key;
 
     }

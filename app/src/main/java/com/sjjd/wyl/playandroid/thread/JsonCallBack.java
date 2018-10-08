@@ -1,7 +1,7 @@
 package com.sjjd.wyl.playandroid.thread;
 
 import com.lzy.okgo.callback.AbsCallback;
-import com.sjjd.wyl.playandroid.utils.GsonUtil;
+import com.sjjd.wyl.playandroid.model.utils.GsonUtil;
 
 import java.lang.reflect.Type;
 

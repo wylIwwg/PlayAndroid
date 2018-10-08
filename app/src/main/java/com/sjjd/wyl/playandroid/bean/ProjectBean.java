@@ -8,34 +8,26 @@ import java.util.List;
 
 public class ProjectBean {
 
-    private Data data;
+    public class Tags {
+        private String name;
 
-    private int errorCode;
+        private String url;
 
-    private String errorMsg;
+        public void setName(String name) {
+            this.name = name;
+        }
 
-    public void setData(Data data) {
-        this.data = data;
-    }
+        public String getName() {
+            return this.name;
+        }
 
-    public Data getData() {
-        return this.data;
-    }
+        public void setUrl(String url) {
+            this.url = url;
+        }
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public int getErrorCode() {
-        return this.errorCode;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
-    public String getErrorMsg() {
-        return this.errorMsg;
+        public String getUrl() {
+            return this.url;
+        }
     }
 
     public class Datas {
@@ -67,17 +59,19 @@ public class ProjectBean {
 
         private String projectLink;
 
-        private long publishTime;
+        private int publishTime;
 
-        private long superChapterId;
+        private int superChapterId;
 
         private String superChapterName;
 
-        private List<String> tags;
+        private List<Tags> tags;
 
         private String title;
 
         private int type;
+
+        private int userId;
 
         private int visible;
 
@@ -195,19 +189,19 @@ public class ProjectBean {
             return this.projectLink;
         }
 
-        public void setPublishTime(long publishTime) {
+        public void setPublishTime(int publishTime) {
             this.publishTime = publishTime;
         }
 
-        public long getPublishTime() {
+        public int getPublishTime() {
             return this.publishTime;
         }
 
-        public void setSuperChapterId(long superChapterId) {
+        public void setSuperChapterId(int superChapterId) {
             this.superChapterId = superChapterId;
         }
 
-        public long getSuperChapterId() {
+        public int getSuperChapterId() {
             return this.superChapterId;
         }
 
@@ -219,11 +213,11 @@ public class ProjectBean {
             return this.superChapterName;
         }
 
-        public void setTags(List<String> tags) {
+        public void setTags(List<Tags> tags) {
             this.tags = tags;
         }
 
-        public List<String> getTags() {
+        public List<Tags> getTags() {
             return this.tags;
         }
 
@@ -243,6 +237,14 @@ public class ProjectBean {
             return this.type;
         }
 
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+
+        public int getUserId() {
+            return this.userId;
+        }
+
         public void setVisible(int visible) {
             this.visible = visible;
         }
@@ -259,7 +261,6 @@ public class ProjectBean {
             return this.zan;
         }
     }
-
 
     public class Data {
         private int curPage;
@@ -331,5 +332,35 @@ public class ProjectBean {
         public int getTotal() {
             return this.total;
         }
+    }
+
+    private Data data;
+
+    private int errorCode;
+
+    private String errorMsg;
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    public Data getData() {
+        return this.data;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public int getErrorCode() {
+        return this.errorCode;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    public String getErrorMsg() {
+        return this.errorMsg;
     }
 }
