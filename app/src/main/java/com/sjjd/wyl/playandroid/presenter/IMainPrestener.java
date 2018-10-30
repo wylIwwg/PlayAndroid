@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import com.lzy.okgo.model.Response;
 import com.sjjd.wyl.playandroid.base.App;
+import com.sjjd.wyl.playandroid.bean.ArticleBean;
+import com.sjjd.wyl.playandroid.bean.ProjectBean;
 import com.sjjd.wyl.playandroid.bean.UserBean;
 import com.sjjd.wyl.playandroid.model.net.IModelMain;
 import com.sjjd.wyl.playandroid.model.net.MainModel;
@@ -17,15 +19,25 @@ import static android.content.Context.MODE_PRIVATE;
  * Created by wyl on 2018/5/10.
  */
 
-public class IMainPrestener implements IPrestenerMain {
+public class IMainPrestener<T> implements IPrestenerMain {
 
     IModelMain mIModelMain;
     IMainView<UserBean> mMainView;
+    IMainView<T> mMainView1;
+    Class mClass;
 
     public IMainPrestener(IMainView<UserBean> mainView) {
         mMainView = mainView;
         mIModelMain = new MainModel();
     }
+
+    public IMainPrestener(IMainView<T> mainView, Class<T> clazz) {
+        T t = (T) clazz;
+        mClass = clazz;
+        mMainView1 = mainView;
+        mIModelMain = new MainModel();
+    }
+
 
     @Override
     public void login(final Context context, final String name, String password) {
@@ -78,6 +90,8 @@ public class IMainPrestener implements IPrestenerMain {
             }
         });
     }
+
+
 
 
     @Override

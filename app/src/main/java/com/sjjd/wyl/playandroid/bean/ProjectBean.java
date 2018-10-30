@@ -59,7 +59,7 @@ public class ProjectBean {
 
         private String projectLink;
 
-        private int publishTime;
+        private long publishTime;
 
         private int superChapterId;
 
@@ -189,11 +189,11 @@ public class ProjectBean {
             return this.projectLink;
         }
 
-        public void setPublishTime(int publishTime) {
+        public void setPublishTime(long publishTime) {
             this.publishTime = publishTime;
         }
 
-        public int getPublishTime() {
+        public long getPublishTime() {
             return this.publishTime;
         }
 

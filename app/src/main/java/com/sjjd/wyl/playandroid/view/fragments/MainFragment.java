@@ -277,8 +277,8 @@ public class MainFragment extends Fragment {
                     initBanner(banner);
                     break;
                 case L.CODE.MSG_MAIN_ARTICLE_SUCCESS:
-                    ArticleBean article = (ArticleBean) msg.obj;
-                    initArticle(article);
+                    //ArticleBean article = (ArticleBean) msg.obj;
+                   // initArticle(article);
 
                     break;
                 case L.CODE.MSG_MAIN_HOTWORDS_SUCCESS:
@@ -309,7 +309,7 @@ public class MainFragment extends Fragment {
 
         RecyclerView mRlVKeys = view.findViewById(R.id.rlvHotWords);
         FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
-        mRlVKeys.addItemDecoration(new SpaceItemDecoration(dp2px(10)));
+        mRlVKeys.addItemDecoration(new SpaceItemDecoration(dp2px(5)));
         mRlVKeys.setLayoutManager(flowLayoutManager);
         mRlVKeys.setAdapter(mWordsAdapter);
         if (!pop.isShowing()) {
@@ -325,7 +325,7 @@ public class MainFragment extends Fragment {
 
     private void initArticle(ArticleBean article) {
         List<ArticleBean.Datas> mDatas = article.getData().getDatas();
-        mArticleAdapter.refreshData(mDatas);
+        mArticleAdapter.refreshData(mDatas,false);
     }
 
     private void initBanner(BannerBean banner) {

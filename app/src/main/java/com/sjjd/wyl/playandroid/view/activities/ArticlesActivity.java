@@ -19,7 +19,6 @@ import com.sjjd.wyl.playandroid.R;
 import com.sjjd.wyl.playandroid.adapter.ArticleAdapter;
 import com.sjjd.wyl.playandroid.bean.ArticleBean;
 import com.sjjd.wyl.playandroid.model.utils.L;
-import com.sjjd.wyl.playandroid.thread.ArticleListThread;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -45,11 +44,11 @@ public class ArticlesActivity extends AppCompatActivity {
     LinearLayoutManager mLayoutManager;
     List<ArticleBean.Datas> mArticleList;//文章集合
     ArticleAdapter mArticleAdapter;
-    ArticleListThread mArticleListThread;
     Context mContext;
     int cid;
     String title = "";
     int page = 0;
+    boolean isMore = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +68,17 @@ public class ArticlesActivity extends AppCompatActivity {
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 page++;
-                mArticleListThread = new ArticleListThread(mContext, mNetHander, page, cid);
-                mArticleListThread.start();
+                //   mArticleListThread = new ArticleListThread(mContext, mNetHander, page, cid);
+                //   mArticleListThread.start();
+                isMore = false;
             }
 
             @Override
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 page = 0;
-                mArticleListThread = new ArticleListThread(mContext, mNetHander, page, cid);
-                mArticleListThread.start();
+                // mArticleListThread = new ArticleListThread(mContext, mNetHander, page, cid);
+                // mArticleListThread.start();
+                isMore = true;
             }
         });
     }
@@ -89,8 +90,8 @@ public class ArticlesActivity extends AppCompatActivity {
         mRlvArticles.setAdapter(mArticleAdapter);
         mRlvArticles.setLayoutManager(mLayoutManager);
         mNetHander = new NetHander(this);
-        mArticleListThread = new ArticleListThread(mContext, mNetHander, page, cid);
-        mArticleListThread.start();
+        // mArticleListThread = new ArticleListThread(mContext, mNetHander, page, cid);
+        //  mArticleListThread.start();
 
     }
 
@@ -118,8 +119,7 @@ public class ArticlesActivity extends AppCompatActivity {
                     break;
             }
 
-            mSrlCategory.finishLoadMore();
-            mSrlCategory.finishRefresh();
+
         }
 
     }
@@ -127,7 +127,11 @@ public class ArticlesActivity extends AppCompatActivity {
     private void initArticle(ArticleBean article) {
         List<ArticleBean.Datas> mDatas = article.getData().getDatas();
         if (mDatas != null && mDatas.size() > 0)
-            mArticleAdapter.refreshData(mDatas);
+            mArticleAdapter.refreshData(mDatas, isMore);
+
+        mSrlCategory.finishLoadMore();
+        mSrlCategory.finishRefresh();
+        isMore = false;
 
     }
 }

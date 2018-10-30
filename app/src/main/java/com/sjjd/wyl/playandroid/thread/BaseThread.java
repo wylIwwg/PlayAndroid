@@ -28,7 +28,7 @@ public abstract class BaseThread extends Thread {
     //注意:如果加载data为顺序执行。那么在initData中调用 resumeThread()无效
     //异步网络请求可以正常使用 resumeThread()
     protected boolean loadDataAfterPause = true;
-
+    public int requsetTime = -1;
     protected Context mContext;
     protected Handler mHandler;
 
@@ -73,6 +73,10 @@ public abstract class BaseThread extends Thread {
                 onPause();
             }
 
+            if (requsetTime == 1) {
+                flag = false;
+            }
+
             SystemClock.sleep(SLEEP_MS);
 
             if (isNetworkConnected()) {
@@ -84,7 +88,7 @@ public abstract class BaseThread extends Thread {
                 }
             } else {
                 network_off_count++;
-                if (network_off_count >= NETWORK_OFF_COUNTER) {
+                if (network_off_count >= NETWORK_OFF_COUNTER && mHandler != null) {
                     mHandler.sendEmptyMessage(LOAD_NETWORK_STATUS);
                 }
                 resumeThread();

@@ -89,10 +89,16 @@ public class ProjectAdapter extends RecyclerView.Adapter {
         return mDatas == null ? 0 : mDatas.size();
     }
 
-    public void refreshData(List<ProjectBean.Datas> datas) {
+    public void refreshData(List<ProjectBean.Datas> datas, boolean isMore) {
         if (mDatas != null) {
-            mDatas.clear();
-            mDatas.addAll(datas);
+            if (isMore) {
+                mDatas.addAll(datas);
+
+            } else {
+                mDatas.clear();
+                mDatas.addAll(datas);
+            }
+
             notifyDataSetChanged();
         }
     }

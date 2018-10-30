@@ -40,6 +40,10 @@ public class BaseActivity<V> extends AppCompatActivity implements IBaseView<V> {
         rootLayout = findViewById(R.id.refreshLayout);
 
         if (rootLayout == null) return;
+
+        rootLayout.setEnableLoadMore(false);
+        rootLayout.setEnableRefresh(false);
+
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         rootLayout.addView(view, lp);
     }

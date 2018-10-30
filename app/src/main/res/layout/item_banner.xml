@@ -17,6 +17,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
+        android:textColor="@color/white"
         android:text="这是一个title"
-        android:textSize="20sp"/>
+        android:textSize="18sp"/>
 </RelativeLayout>

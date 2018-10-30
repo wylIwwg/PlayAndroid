@@ -10,8 +10,10 @@ import com.sjjd.wyl.playandroid.thread.JsonCallBack;
  */
 
 public interface IModelMain extends IBaseModel {
+
     void login(Context context, String name, String password, JsonCallBack<UserBean> listener);
 
     void register(Context context, String name, String password, String repassword, JsonCallBack<UserBean> listener);
+
 
 }

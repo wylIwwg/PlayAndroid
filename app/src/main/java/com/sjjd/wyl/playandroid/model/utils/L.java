@@ -9,6 +9,7 @@ public interface L {
 
         String Get_Banner = "http://www.wanandroid.com/banner/json";
         String Get_List = "http://www.wanandroid.com/article/list/%1$d/json";
+        String Get_New_ProjectList = "http://www.wanandroid.com/article/listproject/%1$d/json";
         String Get_Search = "http://www.wanandroid.com/article/query/%1$d/json";
         String Get_HotWords = "http://www.wanandroid.com//hotkey/json";
 

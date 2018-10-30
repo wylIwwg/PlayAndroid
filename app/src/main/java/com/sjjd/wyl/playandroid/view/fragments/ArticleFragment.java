@@ -1,14 +1,11 @@
 package com.sjjd.wyl.playandroid.view.fragments;
 
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,17 +15,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.library.flowlayout.SpaceItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.sjjd.wyl.playandroid.R;
-import com.sjjd.wyl.playandroid.view.activities.WebActivity;
 import com.sjjd.wyl.playandroid.adapter.ArticleAdapter;
+import com.sjjd.wyl.playandroid.base.BaseFragment;
 import com.sjjd.wyl.playandroid.bean.ArticleBean;
 import com.sjjd.wyl.playandroid.model.utils.L;
-import com.sjjd.wyl.playandroid.thread.ArticleListThread;
+import com.sjjd.wyl.playandroid.presenter.PrestenerArticle;
+import com.sjjd.wyl.playandroid.view.activities.WebActivity;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +37,7 @@ import butterknife.Unbinder;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ArticleFragment extends Fragment {
+public class ArticleFragment extends BaseFragment<ArticleBean> {
 
     private final String TAG = this.getClass().getSimpleName();
     KeyBroadReceiver mKeyBroadReceiver;
@@ -49,13 +47,15 @@ public class ArticleFragment extends Fragment {
     SmartRefreshLayout mSrlRoot;
     Unbinder unbinder;
     private int pageCount;
-    private ArticleListThread mArticleListThread;
     private Context mContext;
     ArticleAdapter mArticleAdapter;
     List<ArticleBean.Datas> mArticleList;//文章集合
     private LinearLayoutManager mLayoutManager;
-    NetHander mNetHander;
     String key = "";//搜索关键词
+
+    PrestenerArticle<ArticleBean> mPrestener;
+
+    boolean isMore = false;
 
     public ArticleFragment() {
         // Required empty public constructor
@@ -69,6 +69,7 @@ public class ArticleFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_article, container, false);
         unbinder = ButterKnife.bind(this, view);
         mContext = getActivity();
+        mPrestener = new PrestenerArticle<>(this);
         init();
         initListener();
         return view;
@@ -80,15 +81,16 @@ public class ArticleFragment extends Fragment {
         mContext.registerReceiver(mKeyBroadReceiver, mIntentFilter);
 //        mSrlRoot.setRefreshHeader(new StoreHouseHeader(getActivity()).initWithString("PLAY　ANDROID").setTextColor(Color.WHITE));
 
-        mNetHander = new NetHander(getActivity());
         mArticleList = new ArrayList<>();
         mLayoutManager = new LinearLayoutManager(mContext);
         mArticleAdapter = new ArticleAdapter(mContext, mArticleList);
         mRvlArticle.setAdapter(mArticleAdapter);
         mRvlArticle.setLayoutManager(mLayoutManager);
+        mRvlArticle.addItemDecoration(new SpaceItemDecoration(5));
 
-        mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
-        mArticleListThread.start();
+        //  mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
+        // mArticleListThread.start();
+        mPrestener.getArticle(mContext, L.URL.Get_List, pageCount, 0, null);
     }
 
     private void initListener() {
@@ -107,20 +109,21 @@ public class ArticleFragment extends Fragment {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 pageCount = 0;
                 key = "";
-                mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
-                mArticleListThread.start();
+                mPrestener.getArticle(mContext, L.URL.Get_List, pageCount, 0, null);
+                isMore = false;
             }
 
             @Override
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 pageCount++;
                 if (key != null && key.length() > 1) {
-                    mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount, key);
-                    mArticleListThread.start();
+                    mPrestener.getArticle(mContext, L.URL.Get_List, pageCount, 0, key);
+
                 } else {
-                    mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
-                    mArticleListThread.start();
+                    mPrestener.getArticle(mContext, L.URL.Get_List, pageCount, 0, null);
+
                 }
+                isMore = true;
 
             }
         });
@@ -128,34 +131,20 @@ public class ArticleFragment extends Fragment {
 
     }
 
-    class NetHander extends Handler {
 
-        private WeakReference<Activity> mReference;
+    @Override
+    public void onSuccess(ArticleBean result) {
+        initArticle(result);
+        //关闭加载刷新
+        mSrlRoot.finishLoadMore();
+        mSrlRoot.finishRefresh();
 
-        public NetHander(Activity reference) {
-            mReference = new WeakReference<Activity>(reference);
-        }
-
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case L.CODE.MSG_MAIN_ARTICLE_SUCCESS:
-                    ArticleBean article = (ArticleBean) msg.obj;
-                    initArticle(article);
-
-                    break;
-                case L.CODE.MSG_DATA_FAILED:
-                    break;
-            }
-            //关闭加载刷新
-            mSrlRoot.finishLoadMore();
-            mSrlRoot.finishRefresh();
-        }
     }
 
     private void initArticle(ArticleBean article) {
         List<ArticleBean.Datas> mDatas = article.getData().getDatas();
-        mArticleAdapter.refreshData(mDatas);
+        mArticleAdapter.refreshData(mDatas, isMore);
+        isMore = false;
     }
 
     @Override
@@ -175,8 +164,8 @@ public class ArticleFragment extends Fragment {
                 Log.e(TAG, "onReceive: " + key);
                 ArticleFragment.this.key = key;
                 pageCount = 0;
-                mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount, key);
-                mArticleListThread.start();
+                mPrestener.getArticle(mContext, L.URL.Get_Search, pageCount, 0, key);
+
             }
         }
     }

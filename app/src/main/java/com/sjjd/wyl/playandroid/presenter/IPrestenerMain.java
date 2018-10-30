@@ -11,4 +11,5 @@ public interface IPrestenerMain extends IPrestenerBase {
     void login(Context context, String name, String password);
 
     void register(Context context, String name, String password, String repassword);
+
 }

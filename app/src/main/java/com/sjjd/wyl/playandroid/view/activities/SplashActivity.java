@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.sjjd.wyl.playandroid.R;
+import com.sjjd.wyl.playandroid.thread.I;
+import com.sjjd.wyl.playandroid.utils.SPUtils;
+import com.sjjd.wyl.playandroid.view.activities.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -12,16 +15,17 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        Intent mIntent=null;
+        Intent mIntent = null;
 
-        /*if (SPUtils.init(this).getDIYBoolean(I.SP.USER_LOGINED)) {
-            mIntent=new Intent(this, MainActivity.class);
-        }else {
-            mIntent=new Intent(this, LoginActivity.class);
+        if (SPUtils.init(this).getDIYBoolean(I.SP.USER_LOGINED)) {
+            mIntent = new Intent(this, MainActivity.class);
+        } else {
+            mIntent = new Intent(this, LoginActivity.class);
 
         }
-*/
-        mIntent=new Intent(this, LoginActivity.class);
+
+       // mIntent = new Intent(this, LoginActivity.class);
         startActivity(mIntent);
+        this.finish();
     }
 }
