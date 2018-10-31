@@ -1,12 +1,13 @@
 package com.sjjd.wyl.playandroid.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wyl on 2018/5/2.
  */
 
-public class HotWords {
+public class HotWords implements Serializable {
     private List<Data> data;
 
     private int errorCode;
@@ -37,7 +38,7 @@ public class HotWords {
         return this.errorMsg;
     }
 
-    public class Data {
+    public class Data implements Serializable{
         private int id;
 
         private String link;

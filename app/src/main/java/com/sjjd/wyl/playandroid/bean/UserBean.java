@@ -1,14 +1,15 @@
 package com.sjjd.wyl.playandroid.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wyl on 2018/5/4.
  */
 
-public class UserBean {
+public class UserBean implements Serializable {
 
-    public class Data {
+    public class Data implements Serializable{
         private List<Integer> collectIds;
 
         private String email;

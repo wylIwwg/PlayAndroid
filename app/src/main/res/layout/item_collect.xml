@@ -1,33 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardCollect"
+    android:layout_width="280dp"
+    android:layout_height="400dp"
+    app:cardCornerRadius="10dp"
+    tools:style="@style/CardView">
 
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
-
-
-    <TextView
-
-        android:id="@+id/tvTitle"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:text="文章Title文章Title文章Title文章Title文章Title文章Title"
-        android:textColor="@color/black"
-        android:textSize="18sp"/>
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/imgCover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/tvTitle"
+            android:layout_margin="10dp"
+            />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tvDesc"
+            android:layout_marginBottom="10dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:paddingLeft="10dp"
+            android:text="文章Title文章Title文章Title文章Title文章Title文章Title"
+            android:textColor="@color/black"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/tvDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tvAuthor"
+            android:layout_marginBottom="5dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="3"
+            android:paddingLeft="10dp"
+            android:text="文章Title文章Title文章Title文章Title文章Title文章Title"
+            android:textSize="14sp"/>
 
         <TextView
             android:id="@+id/tvAuthor"
-            android:layout_width="0dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_above="@id/tvTime"
             android:layout_weight="1"
             android:paddingLeft="10dp"
             android:text="作者："
@@ -36,27 +62,26 @@
 
         <TextView
             android:id="@+id/tvCategory"
-            android:layout_width="0dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:layout_above="@id/tvTime"
+            android:layout_toRightOf="@id/tvAuthor"
             android:layout_weight="1"
             android:paddingLeft="10dp"
             android:text="分类："
             android:textSize="15sp"/>
-    </LinearLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
             android:paddingLeft="10dp"
-            android:text="收藏时间：2018-04-15"/>
+            android:text="收藏时间：2018-04-15"
+            android:textSize="14sp"/>
 
     </RelativeLayout>
-
-</LinearLayout>
+</android.support.v7.widget.CardView>

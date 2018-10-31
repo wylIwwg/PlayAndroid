@@ -55,7 +55,7 @@ public class CateAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View v) {
                 if (mKeyClickListener != null) {
-                    mKeyClickListener.keyClick(mHotWords.getName());
+                    mKeyClickListener.keyClick(mHotWords);
                 }
             }
         });
@@ -75,7 +75,7 @@ public class CateAdapter extends RecyclerView.Adapter {
     }
 
     public interface KeyClickListener {
-        void keyClick(String key);
+        void keyClick(CategoryBean.Children key);
     }
 
     KeyClickListener mKeyClickListener;

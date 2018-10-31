@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.sjjd.wyl.playandroid.model.utils;
+package com.sjjd.wyl.playandroid.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;

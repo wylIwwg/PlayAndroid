@@ -8,7 +8,6 @@ import android.util.Log;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.sjjd.wyl.playandroid.bean.HotWords;
-import com.sjjd.wyl.playandroid.model.utils.L;
 
 /**
  * Created by wyl on 2018/4/27.
@@ -24,7 +23,7 @@ public class KeyWorsThread extends BaseThread {
     @Override
     protected void initData() {
         Log.e(TAG, "initData: " + "KeyWorsThread");
-        OkGo.<HotWords>get(L.URL.Get_HotWords)
+        OkGo.<HotWords>get(I.URL.Get_HotWords)
                 .tag(this)
                 .execute(new JsonCallBack<HotWords>(HotWords.class) {
                              @Override
@@ -32,13 +31,13 @@ public class KeyWorsThread extends BaseThread {
                                  Log.e(TAG, "onSuccess: " + response.body().toString());
                                  HotWords mBody = response.body();
                                  if (mBody == null) {
-                                     mHandler.sendEmptyMessage(L.CODE.MSG_DATA_FAILED);
+                                     mHandler.sendEmptyMessage(I.CODE.MSG_DATA_FAILED);
                                      return;
                                  }
                                  flag = false;
                                  Message msg = Message.obtain();
                                  msg.obj = mBody;
-                                 msg.what = L.CODE.MSG_MAIN_HOTWORDS_SUCCESS;
+                                 msg.what = I.CODE.MSG_MAIN_HOTWORDS_SUCCESS;
                                  mHandler.sendMessage(msg);
 
                              }
@@ -47,7 +46,7 @@ public class KeyWorsThread extends BaseThread {
                              public void onError(Response<HotWords> response) {
                                  super.onError(response);
                                  Log.e(TAG, "onError: ");
-                                 mHandler.sendEmptyMessage(L.CODE.MSG_DATA_FAILED);
+                                 mHandler.sendEmptyMessage(I.CODE.MSG_DATA_FAILED);
 
                              }
                          }

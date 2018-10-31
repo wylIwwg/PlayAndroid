@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.lzy.okgo.OkGo;
 import com.sjjd.wyl.playandroid.bean.UserBean;
-import com.sjjd.wyl.playandroid.model.utils.L;
+import com.sjjd.wyl.playandroid.thread.I;
 import com.sjjd.wyl.playandroid.thread.JsonCallBack;
 
 /**
@@ -20,7 +20,7 @@ public class MainModel implements IModelMain {
 
     @Override
     public void login(Context context, String name, String password, JsonCallBack<UserBean> listener) {
-        OkGo.<UserBean>post(L.URL.Post_Login)
+        OkGo.<UserBean>post(I.URL.Post_Login)
                 .params("username", name)
                 .params("password", password)
                 .tag(this)
@@ -30,7 +30,7 @@ public class MainModel implements IModelMain {
 
     @Override
     public void register(Context context, String name, String password, String repassword, JsonCallBack<UserBean> listener) {
-        OkGo.<UserBean>post(L.URL.Post_Register)
+        OkGo.<UserBean>post(I.URL.Post_Register)
                 .params("username", name)
                 .params("password", password)
                 .params("repassword", repassword)

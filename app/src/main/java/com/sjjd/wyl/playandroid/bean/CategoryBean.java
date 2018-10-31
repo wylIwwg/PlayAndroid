@@ -1,12 +1,13 @@
 package com.sjjd.wyl.playandroid.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wyl on 2018/5/2.
  */
 
-public class CategoryBean {
+public class CategoryBean implements Serializable {
     private List<Data> data;
 
     private int errorCode;
@@ -37,7 +38,7 @@ public class CategoryBean {
         return this.errorMsg;
     }
 
-    public static class Children {
+    public static class Children implements Serializable{
         private List<String> children;
 
         private int courseId;
@@ -110,7 +111,7 @@ public class CategoryBean {
     }
 
 
-    public class Data {
+    public class Data implements Serializable{
         private List<Children> children;
 
         private int courseId;

@@ -1,14 +1,15 @@
 package com.sjjd.wyl.playandroid.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wyl on 2018/5/4.
  */
 
-public class CollectBean {
+public class CollectBean implements Serializable {
 
-    public class Datas {
+    public class Datas implements Serializable{
         private String author;
 
         private int chapterId;
@@ -170,7 +171,7 @@ public class CollectBean {
         }
     }
 
-    public class Data {
+    public class Data implements Serializable{
         private int curPage;
 
         private List<Datas> datas;

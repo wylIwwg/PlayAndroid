@@ -1,17 +1,24 @@
-<com.scwang.smartrefresh.layout.SmartRefreshLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/srlRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:clipChildren="false"
     tools:context=".view.fragments.FavouriteFragment">
 
-    <com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView
-        android:id="@+id/rlvCollect"
+
+    <ImageView
+        android:id="@+id/imgBlur"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"/>
 
-    </com.yanzhenjie.recyclerview.swipe.SwipeMenuRecyclerView>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="280dp"
+        android:layout_height="400dp"
+        android:layout_centerInParent="true">
 
-</com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    </android.support.v4.view.ViewPager>
+</RelativeLayout>
+
+

@@ -1,14 +1,15 @@
 package com.sjjd.wyl.playandroid.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wyl on 2018/5/3.
  */
 
-public class ProjectBean {
+public class ProjectBean implements Serializable {
 
-    public class Tags {
+    public class Tags implements Serializable{
         private String name;
 
         private String url;
@@ -30,7 +31,7 @@ public class ProjectBean {
         }
     }
 
-    public class Datas {
+    public class Datas implements Serializable{
         private String apkLink;
 
         private String author;
@@ -262,7 +263,7 @@ public class ProjectBean {
         }
     }
 
-    public class Data {
+    public class Data implements Serializable{
         private int curPage;
 
         private List<Datas> datas;

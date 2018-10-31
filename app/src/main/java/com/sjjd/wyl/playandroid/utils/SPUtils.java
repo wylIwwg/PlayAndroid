@@ -13,7 +13,7 @@ public class SPUtils {
 
     public static SPUtils init(Context context) {
         if (sp == null) {
-            sp = context.getSharedPreferences("User", Context.MODE_PRIVATE);
+            sp = context.getSharedPreferences("play_android", Context.MODE_PRIVATE);
         }
         return mSPUtils;
     }

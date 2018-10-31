@@ -8,6 +8,7 @@ import com.sjjd.wyl.playandroid.view.iview.IMainView;
  * Created by wyl on 2018/10/30.
  */
 public class BaseFragment<T> extends Fragment implements IMainView<T> {
+    public boolean isMore = false;
 
     @Override
     public void showLoading() {

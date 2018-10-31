@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,8 @@ import com.sjjd.wyl.playandroid.R;
 import com.sjjd.wyl.playandroid.adapter.ArticleAdapter;
 import com.sjjd.wyl.playandroid.base.BaseFragment;
 import com.sjjd.wyl.playandroid.bean.ArticleBean;
-import com.sjjd.wyl.playandroid.model.utils.L;
 import com.sjjd.wyl.playandroid.presenter.PrestenerArticle;
+import com.sjjd.wyl.playandroid.thread.I;
 import com.sjjd.wyl.playandroid.view.activities.WebActivity;
 
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ public class ArticleFragment extends BaseFragment<ArticleBean> {
     }
 
     private void init() {
-        IntentFilter mIntentFilter = new IntentFilter(L.BROADCAST.KEY);
+        IntentFilter mIntentFilter = new IntentFilter(I.BROADCAST.KEY);
         mKeyBroadReceiver = new KeyBroadReceiver();
         mContext.registerReceiver(mKeyBroadReceiver, mIntentFilter);
 //        mSrlRoot.setRefreshHeader(new StoreHouseHeader(getActivity()).initWithString("PLAY　ANDROID").setTextColor(Color.WHITE));
@@ -88,9 +87,7 @@ public class ArticleFragment extends BaseFragment<ArticleBean> {
         mRvlArticle.setLayoutManager(mLayoutManager);
         mRvlArticle.addItemDecoration(new SpaceItemDecoration(5));
 
-        //  mArticleListThread = new ArticleListThread(mContext, mNetHander, pageCount);
-        // mArticleListThread.start();
-        mPrestener.getArticle(mContext, L.URL.Get_List, pageCount, 0, null);
+        mPrestener.getArticle(mContext, I.URL.Get_List, pageCount, 0, null);
     }
 
     private void initListener() {
@@ -109,7 +106,7 @@ public class ArticleFragment extends BaseFragment<ArticleBean> {
             public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                 pageCount = 0;
                 key = "";
-                mPrestener.getArticle(mContext, L.URL.Get_List, pageCount, 0, null);
+                mPrestener.getArticle(mContext, I.URL.Get_List, pageCount, 0, null);
                 isMore = false;
             }
 
@@ -117,10 +114,10 @@ public class ArticleFragment extends BaseFragment<ArticleBean> {
             public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
                 pageCount++;
                 if (key != null && key.length() > 1) {
-                    mPrestener.getArticle(mContext, L.URL.Get_List, pageCount, 0, key);
+                    mPrestener.getArticle(mContext, I.URL.Get_List, pageCount, 0, key);
 
                 } else {
-                    mPrestener.getArticle(mContext, L.URL.Get_List, pageCount, 0, null);
+                    mPrestener.getArticle(mContext, I.URL.Get_List, pageCount, 0, null);
 
                 }
                 isMore = true;
@@ -159,12 +156,11 @@ public class ArticleFragment extends BaseFragment<ArticleBean> {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(L.BROADCAST.KEY)) {
+            if (intent.getAction().equals(I.BROADCAST.KEY)) {
                 String key = intent.getStringExtra("key");
-                Log.e(TAG, "onReceive: " + key);
                 ArticleFragment.this.key = key;
                 pageCount = 0;
-                mPrestener.getArticle(mContext, L.URL.Get_Search, pageCount, 0, key);
+                mPrestener.getArticle(mContext, I.URL.Get_Search, pageCount, 0, key);
 
             }
         }

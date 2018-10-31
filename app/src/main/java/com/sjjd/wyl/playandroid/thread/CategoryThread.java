@@ -8,7 +8,6 @@ import android.util.Log;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.Response;
 import com.sjjd.wyl.playandroid.bean.CategoryBean;
-import com.sjjd.wyl.playandroid.model.utils.L;
 
 /**
  * Created by wyl on 2018/4/27.
@@ -24,7 +23,7 @@ public class CategoryThread extends BaseThread {
     @Override
     protected void initData() {
         Log.e(TAG, "initData: " + "CategoryThread");
-        OkGo.<CategoryBean>get(L.CATEGORY.Get_Category)
+        OkGo.<CategoryBean>get(I.CATEGORY.Get_Category)
                 .tag(this)
                 .execute(new JsonCallBack<CategoryBean>(CategoryBean.class) {
                              @Override
@@ -32,13 +31,13 @@ public class CategoryThread extends BaseThread {
                                  Log.e(TAG, "onSuccess: " + response.body().toString());
                                  CategoryBean mBody = response.body();
                                  if (mBody == null) {
-                                     mHandler.sendEmptyMessage(L.CODE.MSG_DATA_FAILED);
+                                     mHandler.sendEmptyMessage(I.CODE.MSG_DATA_FAILED);
                                      return;
                                  }
                                  flag = false;
                                  Message msg = Message.obtain();
                                  msg.obj = mBody.getData();
-                                 msg.what = L.CODE.MSG_CATEGORY_SUCCESS;
+                                 msg.what = I.CODE.MSG_CATEGORY_SUCCESS;
                                  mHandler.sendMessage(msg);
 
                              }
@@ -47,7 +46,7 @@ public class CategoryThread extends BaseThread {
                              public void onError(Response<CategoryBean> response) {
                                  super.onError(response);
                                  Log.e(TAG, "onError: ");
-                                 mHandler.sendEmptyMessage(L.CODE.MSG_DATA_FAILED);
+                                 mHandler.sendEmptyMessage(I.CODE.MSG_DATA_FAILED);
 
                              }
                          }

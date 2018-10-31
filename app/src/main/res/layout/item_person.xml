@@ -138,7 +138,8 @@
                 android:background="@drawable/et_search"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:textCursorDrawable="@drawable/cursor_color"/>
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="14sp"/>
 
         </LinearLayout>
 
@@ -164,7 +165,8 @@
                 android:background="@drawable/et_search"
                 android:gravity="center_vertical"
                 android:paddingLeft="10dp"
-                android:textCursorDrawable="@drawable/cursor_color"/>
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="14sp"/>
 
         </LinearLayout>
 

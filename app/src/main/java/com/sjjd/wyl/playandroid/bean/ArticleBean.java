@@ -1,8 +1,9 @@
 package com.sjjd.wyl.playandroid.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ArticleBean {
+public class ArticleBean implements Serializable{
     private Data data;
 
     private int errorCode;
@@ -33,7 +34,7 @@ public class ArticleBean {
         return this.errorMsg;
     }
 
-    public static class Tags {
+    public static class Tags implements Serializable{
         private String name;
 
         private String url;
@@ -56,7 +57,7 @@ public class ArticleBean {
     }
 
 
-    public static class Datas {
+    public static class Datas implements Serializable{
         private String apkLink;
 
         private String author;
@@ -279,7 +280,7 @@ public class ArticleBean {
     }
 
 
-    public static class Data {
+    public static class Data implements Serializable{
         private int curPage;
 
         private List<Datas> datas;

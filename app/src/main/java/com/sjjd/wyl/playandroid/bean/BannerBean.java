@@ -1,12 +1,13 @@
 package com.sjjd.wyl.playandroid.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by wyl on 2018/4/27.
  */
 
-public class BannerBean {
+public class BannerBean implements Serializable {
 
 
     private List<Data> data;
@@ -48,7 +49,7 @@ public class BannerBean {
         return errormsg;
     }
 
-    public class Data {
+    public class Data implements Serializable{
 
         private String desc;
         private int id;

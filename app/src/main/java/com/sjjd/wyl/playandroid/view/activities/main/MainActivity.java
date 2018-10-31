@@ -1,6 +1,5 @@
 package com.sjjd.wyl.playandroid.view.activities.main;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 import com.sjjd.wyl.playandroid.R;
@@ -26,6 +26,8 @@ import com.sjjd.wyl.playandroid.base.BaseActivity;
 import com.sjjd.wyl.playandroid.bean.UserBean;
 import com.sjjd.wyl.playandroid.presenter.IMainPrestener;
 import com.sjjd.wyl.playandroid.presenter.IPrestenerMain;
+import com.sjjd.wyl.playandroid.thread.I;
+import com.sjjd.wyl.playandroid.utils.SPUtils;
 import com.sjjd.wyl.playandroid.view.fragments.CategoryFragment;
 import com.sjjd.wyl.playandroid.view.fragments.FavouriteFragment;
 import com.sjjd.wyl.playandroid.view.fragments.MainFragment;
@@ -93,13 +95,12 @@ public class MainActivity extends BaseActivity<UserBean> implements IMainView<Us
         ButterKnife.bind(this);
         mPrestenerMain = new IMainPrestener(this);
 
-        SharedPreferences mUser = getSharedPreferences("User", MODE_PRIVATE);
-        userLogined = mUser.getBoolean("login", false);
+        userLogined = SPUtils.init(mContext).getDIYBoolean(I.SP.USER_LOGINED);
         App.getInstance().logined = userLogined;
 
         if (userLogined) {
             mTvSignIn.setText("退出登录");
-            String nick = mUser.getString("nick", null);
+            String nick = SPUtils.init(mContext).getDIYString(I.SP.USER_NAME);
             if (nick != null) {
                 mTvNick.setText(nick);
             }
@@ -240,9 +241,9 @@ public class MainActivity extends BaseActivity<UserBean> implements IMainView<Us
                 if (userLogined) {
                     userLogined = false;
                     App.getInstance().logined = false;
-                    SharedPreferences mUser = getSharedPreferences("User", MODE_PRIVATE);
-                    mUser.edit().putBoolean("login", false).apply();
-                    mUser.edit().putString("nick", null).apply();
+                    SPUtils.init(mContext).putDIYString(I.SP.USER_NAME, null);
+                    SPUtils.init(mContext).putDIYBoolean(I.SP.USER_LOGINED, false);
+                    OkGo.getInstance().getCookieJar().getCookieStore().removeAllCookie();
                     mTvNick.setText("Play Android");
                     mTvSignIn.setText("登录/注册");
                     loingShowing = false;
@@ -314,9 +315,9 @@ public class MainActivity extends BaseActivity<UserBean> implements IMainView<Us
         if (result.getData() != null) {
             userLogined = true;
             App.getInstance().logined = true;
-            SharedPreferences mUser = getSharedPreferences("User", MODE_PRIVATE);
-            mUser.edit().putBoolean("login", true).apply();
-            mUser.edit().putString("nick", result.getData().getUsername()).apply();
+            App.getInstance().logined = true;
+            SPUtils.init(mContext).putDIYBoolean(I.SP.USER_LOGINED, true);
+            SPUtils.init(mContext).putDIYString(I.SP.USER_NAME, result.getData().getUsername());
             mEtNick.setText("");
             mEtPsw.setText("");
             mEtPswCom.setText("");
@@ -324,6 +325,7 @@ public class MainActivity extends BaseActivity<UserBean> implements IMainView<Us
             mTvSignIn.setText("退出登录");
             mTvNick.setText(result.getData().getUsername());
             mLlLoginRegister.setVisibility(View.GONE);
+            Toast.makeText(mContext, result.getErrorMsg(), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.lzy.okgo.OkGo;
 import com.sjjd.wyl.playandroid.bean.ProjectBean;
-import com.sjjd.wyl.playandroid.model.utils.L;
 import com.sjjd.wyl.playandroid.thread.BaseThread;
+import com.sjjd.wyl.playandroid.thread.I;
 import com.sjjd.wyl.playandroid.thread.JsonCallBack;
 
 /**
@@ -16,7 +16,7 @@ public class ModelProject {
         BaseThread mThread = new BaseThread(context, null) {
             @Override
             protected void initData() {
-                OkGo.<ProjectBean>get(String.format(L.URL.Get_New_ProjectList, page))
+                OkGo.<ProjectBean>get(String.format(I.URL.Get_New_ProjectList, page))
                         .tag(this)
                         .execute(listener);
             }

@@ -31,17 +31,17 @@ import android.widget.RelativeLayout;
 import com.library.flowlayout.FlowLayoutManager;
 import com.library.flowlayout.SpaceItemDecoration;
 import com.sjjd.wyl.playandroid.R;
-import com.sjjd.wyl.playandroid.view.activities.WebActivity;
 import com.sjjd.wyl.playandroid.adapter.ArticleAdapter;
 import com.sjjd.wyl.playandroid.adapter.BannerPager;
 import com.sjjd.wyl.playandroid.adapter.HotWordsAdapter;
 import com.sjjd.wyl.playandroid.bean.ArticleBean;
 import com.sjjd.wyl.playandroid.bean.BannerBean;
 import com.sjjd.wyl.playandroid.bean.HotWords;
-import com.sjjd.wyl.playandroid.model.utils.L;
 import com.sjjd.wyl.playandroid.thread.ArticleListThread;
 import com.sjjd.wyl.playandroid.thread.BannerThread;
+import com.sjjd.wyl.playandroid.thread.I;
 import com.sjjd.wyl.playandroid.thread.KeyWorsThread;
+import com.sjjd.wyl.playandroid.view.activities.WebActivity;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -157,7 +157,7 @@ public class MainFragment extends Fragment {
                 key = mEtSearch.getText().toString().trim();
                 //有关键词则搜索
                 if (key.length() > 1) {
-                    Intent mIntent = new Intent(L.BROADCAST.KEY);
+                    Intent mIntent = new Intent(I.BROADCAST.KEY);
                     mIntent.putExtra("key", key);
                     mContext.sendBroadcast(mIntent);
                 }
@@ -173,7 +173,7 @@ public class MainFragment extends Fragment {
                 //有关键词则搜索
                 if (key.length() > 1) {
                     //
-                    Intent mIntent = new Intent(L.BROADCAST.KEY);
+                    Intent mIntent = new Intent(I.BROADCAST.KEY);
                     mIntent.putExtra("key", key);
                     mContext.sendBroadcast(mIntent);
                 }
@@ -272,21 +272,21 @@ public class MainFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case L.CODE.MSG_MAIN_BANNER_SUCCESS:
+                case I.CODE.MSG_MAIN_BANNER_SUCCESS:
                     BannerBean banner = (BannerBean) msg.obj;
                     initBanner(banner);
                     break;
-                case L.CODE.MSG_MAIN_ARTICLE_SUCCESS:
+                case I.CODE.MSG_MAIN_ARTICLE_SUCCESS:
                     //ArticleBean article = (ArticleBean) msg.obj;
                    // initArticle(article);
 
                     break;
-                case L.CODE.MSG_MAIN_HOTWORDS_SUCCESS:
+                case I.CODE.MSG_MAIN_HOTWORDS_SUCCESS:
                     HotWords keys = (HotWords) msg.obj;
                     mWordsAdapter.refreshData(keys.getData());
 
                     break;
-                case L.CODE.MSG_DATA_FAILED:
+                case I.CODE.MSG_DATA_FAILED:
                     break;
             }
             //关闭加载刷新

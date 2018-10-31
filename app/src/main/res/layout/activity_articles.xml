@@ -8,29 +8,31 @@
     android:orientation="vertical"
     tools:context=".view.activities.ArticlesActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <ImageView
+            android:layout_centerVertical="true"
             android:id="@+id/imgBack"
-            android:layout_width="30dp"
-            android:layout_height="24dp"
+            android:scaleType="fitCenter"
+            android:padding="20px"
+            android:layout_width="100px"
+            android:layout_height="100px"
             android:layout_gravity="center_vertical"
-            android:scaleType="center"
-            android:src="@drawable/left_arrow"/>
+            android:src="@drawable/back"/>
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_centerInParent="true"
             android:paddingBottom="10dp"
             android:paddingTop="10dp"
             android:textColor="@color/seagreen"
             android:textSize="18sp"/>
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout

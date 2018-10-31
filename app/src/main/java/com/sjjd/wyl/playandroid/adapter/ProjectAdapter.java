@@ -11,6 +11,8 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.request.RequestOptions;
 import com.sjjd.wyl.playandroid.R;
 import com.sjjd.wyl.playandroid.bean.ProjectBean;
 
@@ -50,7 +52,12 @@ public class ProjectAdapter extends RecyclerView.Adapter {
         h.mTvTime.setText("时间：" + data.getNiceDate());
         h.mCbCollect.setChecked(data.getCollect());
         h.mTvDesc.setText(data.getDesc());
-        Glide.with(mContext).load(data.getEnvelopePic()).error(R.drawable.left_arrow).into(h.mGifCover);
+        RequestOptions options = new RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.blank)
+                .error(R.drawable.blank)
+                .priority(Priority.HIGH);
+        Glide.with(mContext).load(data.getEnvelopePic()).apply(options).into(h.mGifCover);
         h.mCbCollect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

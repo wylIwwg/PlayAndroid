@@ -2,15 +2,20 @@ package com.sjjd.wyl.playandroid.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.library.flowlayout.FlowLayoutManager;
+import com.library.flowlayout.SpaceItemDecoration;
 import com.sjjd.wyl.playandroid.R;
-import com.sjjd.wyl.playandroid.view.activities.ArticlesActivity;
 import com.sjjd.wyl.playandroid.bean.CategoryBean;
+import com.sjjd.wyl.playandroid.view.activities.ArticlesActivity;
 
 import java.util.List;
 
@@ -21,9 +26,12 @@ import butterknife.ButterKnife;
  * Created by wyl on 2018/5/2.
  */
 
-public class CategoryAdapter extends BaseExpandableListAdapter {
+public class CategoryAdapter extends RecyclerView.Adapter {
     Context mContext;
     List<CategoryBean.Data> groupList;
+
+
+    RelativeLayout lastView;
 
 
     public CategoryAdapter(Context context, List<CategoryBean.Data> groupList) {
@@ -31,95 +39,89 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         this.groupList = groupList;
     }
 
+    @NonNull
     @Override
-    public int getGroupCount() {
-        return groupList == null ? 0 : groupList.size();
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View mView = View.inflate(mContext, R.layout.item_category, null);
+        mView.setLayoutParams(new LinearLayout.LayoutParams(-1, -2));
+        return new ViewHolder(mView);
     }
 
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        return groupList == null || groupList.get(groupPosition) == null ? 0 : groupList.get(groupPosition).getChildren().size();
-    }
+    Button lastBtn;
 
     @Override
-    public Object getGroup(int groupPosition) {
-        return groupList.get(groupPosition);
-    }
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        final ViewHolder mHolder = (ViewHolder) holder;
+        final CategoryBean.Data mData = groupList.get(position);
+        mHolder.mBtnCategory.setText(mData.getName());
+        mHolder.mRlvChild.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
 
-    @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        return groupList.get(groupPosition).getChildren().get(childPosition);
-    }
+            @Override
+            public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+                rv.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
 
-    @Override
-    public long getGroupId(int groupPosition) {
-        return groupPosition;
-    }
+            @Override
+            public void onTouchEvent(RecyclerView rv, MotionEvent e) {
 
-    @Override
-    public long getChildId(int groupPosition, int childPosition) {
-        return 0;
-    }
+            }
 
-    @Override
-    public boolean hasStableIds() {
-        return false;
-    }
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
-    @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        GroupViewHolder holder = null;
+            }
+        });
 
-        if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.item_category, null);
-            holder = new GroupViewHolder(convertView);
-            convertView.setTag(holder);
-        } else {
-            holder = (GroupViewHolder) convertView.getTag();
-        }
-
-        CategoryBean.Data group = (CategoryBean.Data) getGroup(groupPosition);
-        if (group != null) {
-            holder.mTvCategory.setText(group.getName());
-            holder.mImgExpanded.setImageResource(isExpanded ? R.drawable.up_arrow : R.drawable.down_arrow);
-        }
-        return convertView;
-    }
-
-    @Override
-    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        ViewHolder holder = null;
-        if (convertView == null) {
-            convertView = View.inflate(mContext, R.layout.item_category_child, null);
-            holder = new ViewHolder(convertView);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-        final CategoryBean.Children child = (CategoryBean.Children) getChild(groupPosition, childPosition);
-        if (child != null) {
-            holder.mTvCategoryChild.setText(child.getName());
-
-            holder.mTvCategoryChild.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent mIntent = new Intent(mContext, ArticlesActivity.class);
-                    mIntent.putExtra("cid", child.getId());
-                    mIntent.putExtra("title", child.getName());
-                    mContext.startActivity(mIntent);
-
+        mHolder.mBtnCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mHolder.mLayout.getVisibility() == View.VISIBLE) {
+                    mHolder.mLayout.setVisibility(View.GONE);
+                    mHolder.mBtnCategory.setTextColor(mContext.getResources().getColor(R.color.darkseagreen));
+                    return;
                 }
-            });
+                if (lastView != null) {
+                    lastView.setVisibility(View.GONE);
+                }
+                mHolder.mBtnCategory.setTextColor(mContext.getResources().getColor(R.color.seagreen));
+                mHolder.mLayout.setVisibility(View.VISIBLE);
 
-        }
-        return convertView;
+                if (lastBtn != null && lastBtn != mHolder.mBtnCategory) {
+                    lastBtn.setTextColor(mContext.getResources().getColor(R.color.darkseagreen));
+                }
+
+                if (lastView == mHolder.mLayout) {
+                    return;
+                }
+                lastView = mHolder.mLayout;
+                lastBtn = mHolder.mBtnCategory;
+                FlowLayoutManager flowLayoutManager = new FlowLayoutManager();
+                mHolder.mRlvChild.setLayoutManager(flowLayoutManager);
+                mHolder.mRlvChild.addItemDecoration(new SpaceItemDecoration(5));
+                final CateAdapter mCateAdapter = new CateAdapter(mData.getChildren(), mContext);
+                mCateAdapter.setKeyClickListener(new CateAdapter.KeyClickListener() {
+                    @Override
+                    public void keyClick(CategoryBean.Children key) {
+                        Intent mIntent = new Intent(mContext, ArticlesActivity.class);
+                        mIntent.putExtra("cid", key.getId());
+                        mIntent.putExtra("title", key.getName());
+                        mContext.startActivity(mIntent);
+                    }
+                });
+                mHolder.mRlvChild.setAdapter(mCateAdapter);
+            }
+        });
+
     }
+
 
     @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
+    public int getItemCount() {
+        return groupList == null ? 0 : groupList.size();
+
     }
+
 
     public void refreshData(List<CategoryBean.Data> cate) {
         if (groupList != null) {
@@ -129,22 +131,17 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         }
     }
 
-    static class GroupViewHolder {
-        @BindView(R.id.tvCategory)
-        TextView mTvCategory;
-        @BindView(R.id.imgExpanded)
-        ImageView mImgExpanded;
 
-        GroupViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
-
-    static class ViewHolder {
-        @BindView(R.id.tvCategoryChild)
-        TextView mTvCategoryChild;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.btnCategory)
+        Button mBtnCategory;
+        @BindView(R.id.rlChild)
+        RelativeLayout mLayout;
+        @BindView(R.id.rlvChild)
+        RecyclerView mRlvChild;
 
         ViewHolder(View view) {
+            super(view);
             ButterKnife.bind(this, view);
         }
     }
